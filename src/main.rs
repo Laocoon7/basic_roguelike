@@ -39,6 +39,7 @@ fn main() {
 
     // Load AppSettings
     let app_settings = AppSettings::load(brt_plugin.folders());
+
     app.add_plugins(
         DefaultPlugins
             .set(WindowPlugin {

@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use brt::resources::Folders;
 
+use crate::ui::UiConstants;
+
 #[derive(Serialize, Deserialize, Resource, Reflect, Clone)]
 #[reflect(Resource)]
 pub struct AppSettings {
@@ -83,11 +85,11 @@ impl AppSettings {
     }
 
     pub fn window_width(&self) -> f32 {
-        (self.tile_size * self.view_size.0) as f32
+        (self.tile_size * self.view_size.0 + UiConstants::STATS_WIDTH) as f32
     }
 
     pub fn window_height(&self) -> f32 {
-        (self.tile_size * self.view_size.1) as f32
+        (self.tile_size * self.view_size.1 + UiConstants::LOG_HEIGHT) as f32
     }
 }
 
