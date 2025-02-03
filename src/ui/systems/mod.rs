@@ -1,3 +1,6 @@
+mod look_at_camera_target;
+pub use self::look_at_camera_target::*;
+
 mod setup_ui;
 pub use self::setup_ui::*;
 

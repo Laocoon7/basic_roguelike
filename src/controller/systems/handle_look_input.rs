@@ -2,21 +2,33 @@ use bevy::prelude::*;
 use brt::direction::Direction;
 
 use crate::{
-    controller::commands::Look,
-    model::{
-        commands::TryMove,
-        components::{Player, Position},
+    controller::{
+        components::Selector,
+        events::{CancelSelection, EndSelection},
+        resources::CurrentSelection,
     },
-    ui::resources::GameLog,
+    model::components::Position,
 };
 
-pub fn handle_input(
-    mut commands: Commands,
+pub fn handle_look_input(
     button_input: Res<ButtonInput<KeyCode>>,
-    mut game_log: ResMut<GameLog>,
-    player: Single<(Entity, &Position), With<Player>>,
+    current_selection: Res<CurrentSelection>,
+    mut e_cancel_selection: EventWriter<CancelSelection>,
+    mut e_end_selection: EventWriter<EndSelection>,
+    q_selection: Single<&mut Position, With<Selector>>,
 ) {
-    let (player_entity, player_position) = player.into_inner();
+    if button_input.just_pressed(KeyCode::Escape) {
+        e_cancel_selection.send(CancelSelection);
+        return;
+    }
+
+    if button_input.just_pressed(KeyCode::Enter) || button_input.just_pressed(KeyCode::NumpadEnter)
+    {
+        e_end_selection.send(EndSelection::new(current_selection.get_selection().clone()));
+        return;
+    }
+
+    let mut look_position = q_selection.into_inner();
 
     let mut dir = Direction::NONE;
 
@@ -46,12 +58,7 @@ pub fn handle_input(
     }
     dir.simplify();
     if dir != Direction::NONE {
-        game_log.add_message(format!("You walk {}", dir));
-        commands.entity(player_entity).queue(TryMove::new(dir));
-    }
-
-    if button_input.just_pressed(KeyCode::KeyL) {
-        game_log.add_message("You look around");
-        commands.queue(Look::new(*player_position));
+        *look_position += dir;
+        info!("look_position: {:?}", *look_position);
     }
 }

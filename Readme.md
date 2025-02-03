@@ -5,30 +5,18 @@ This is less of a tutorial, and more of a journal. Just wanted to make a super b
 https://roguebasin.com/index.php/How_to_Write_a_Roguelike_in_15_Steps
 I intend on following these steps in each git branch.
 
-## Step 3 - It's a boy!
+## Step 4 - The map
 ```
-Start with screen output and keyboard input. Decide preemptively on your screen layout (easy, you can change it later) and make the routines that display map characters, status lines and messages.
+Decide on your map structure. Don't over-generalize -- you can add things later. Make your (empty) map displayed on the screen. Scrolled if you need it. Add some elements to your map to see if they are displayed correctly (just hard-code them, you don't need a level generator yet).
 
-Make the routine to read key-presses (no config files, no keys redefinition, Preferred Key Controls).
+Make your '@' appear on the map -- not as it's element at first, just as a cursor. Test the scrolling, maybe make a 'look' command.
 
-Make a '@ walking around the empty screen' demo. Play with it a little, clean things up, play some more, imagining the game is finished and you're playing it.
-
-Make the message handling routines -- especially for the debugging messages -- they come in handy.
+Now turn '@' into creature. You still don't have time implemented, so the keyboard-reading routines will just move it around the map. Include the checks for walls in the movement code. Maybe add doors and open/close commands.
 ```
-### Controller module:
-- Input Handling
+Made a simple Map which holds entities. We create entities and give each a TileType and a position. We'll also keep track of actors positions on the map. Now that there is terrain to look at, we can have the camera follow the player.
 
-### Model module:
-- Player Tag
-- Position component
-- Spawn Player
+To handle walls, we can turn move into an entity command. Actions will need access to the world, and each action will be performed by an entity, so this feels right.
 
-### Ui module:
-- Screen Layout
-- Camera Spawning
-- GameLog
-- Stats Panel
+In order to create a `look` command, we need to describe something to look at so we have a `Description` component. We also need to track the look targeting state. Since targeting is a different set of input, we'll just have a different state for each type of targeting we want to do (only looking for now). This will allow us to create a group of entities for selection, draw an outline around each, move them without moving the player, and get their positions once we are done targetting.
 
-### View module:
-- add sprites to actors/player
-- move sprites around based on their position
+It's quite a rough system, but it's working..

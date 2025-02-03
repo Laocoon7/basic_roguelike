@@ -3,7 +3,7 @@ use bevy::prelude::*;
 use crate::ui::{
     components::{GameCamera, LogCamera, LogPanel, LogText, StatsCamera},
     resources::GameLog,
-    systems::{setup_ui, spawn_camera, update_log},
+    systems::{look_at_camera_target, setup_ui, spawn_camera, update_log},
 };
 
 pub struct UiPlugin;
@@ -19,6 +19,6 @@ impl Plugin for UiPlugin {
         app.init_resource::<GameLog>();
 
         app.add_systems(Startup, (spawn_camera, setup_ui).chain());
-        app.add_systems(PostUpdate, update_log);
+        app.add_systems(PostUpdate, (look_at_camera_target, update_log));
     }
 }

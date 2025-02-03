@@ -1,3 +1,6 @@
+mod camera_target;
+pub use self::camera_target::*;
+
 mod game_camera;
 pub use self::game_camera::*;
 

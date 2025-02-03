@@ -1,4 +1,7 @@
+pub mod commands;
 pub mod components;
+pub mod maps;
+pub mod resources;
 pub mod systems;
 
 mod model_constants;
